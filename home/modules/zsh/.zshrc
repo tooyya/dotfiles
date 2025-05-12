@@ -20,13 +20,27 @@ PROMPT2="%{$fg[green]%}%_> %{$reset_color%}"
 SPROMPT="%{$fg[red]%}correct: %R -> %r [nyae]? %{$reset_color%}"
 RPROMPT="%{$fg[cyan]%}[%~]%{$reset_color%}"
 
-# エイリアス
+# alias
 alias ls='ls --color=auto'
 alias ll='ls -la'
 alias la='ls -a'
 alias vi='nvim'
 alias vim='nvim'
 alias g='git'
+
+# git
+function update-master() {
+    git checkout master
+    git remote update
+    git rebase origin/master
+}
+
+# git
+function update-main() {
+    git checkout main
+    git remote update
+    git rebase origin/main
+}
 
 ### nodenv
 eval "$(nodenv init - zsh)"
@@ -35,14 +49,6 @@ eval "$(nodenv init - zsh)"
 export GOENV_ROOT=$HOME/.goenv
 export PATH=$GOENV_ROOT/bin:$PATH
 eval "$(goenv init -)"
-
-# # PATH設定
-# export PATH=$HOME/.nix-profile/bin:$PATH
-
-# # Nix関連
-# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-#   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-# fi
 
 ## ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
 function peco-src () {
@@ -55,7 +61,6 @@ function peco-src () {
 }
 zle -N peco-src
 bindkey '^]' peco-src
-
 
 # ローカル設定があれば読み込む
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
