@@ -42,9 +42,6 @@ function update-main() {
     git rebase origin/main
 }
 
-### nodenv
-eval "$(nodenv init - zsh)"
-
 ### goenv
 export GOENV_ROOT=$HOME/.goenv
 export PATH=$GOENV_ROOT/bin:$PATH
