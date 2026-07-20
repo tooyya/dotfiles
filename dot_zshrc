@@ -41,11 +41,6 @@ function update-main() {
     git rebase origin/main
 }
 
-### goenv
-export GOENV_ROOT=$HOME/.goenv
-export PATH=$GOENV_ROOT/bin:$PATH
-eval "$(goenv init -)"
-
 ## ghq
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --prompt="repositories >" --query "$LBUFFER")
@@ -57,6 +52,20 @@ function peco-src () {
 }
 zle -N peco-src
 bindkey '^]' peco-src
+
+# completion: full rebuild is >3s, so run it at most once a day and
+# trust the cache (-C) otherwise. run `compinit` manually after installing
+# a tool whose completion doesn't show up.
+# fpath must be identical in every shell (login or not), otherwise each
+# variant invalidates the shared ~/.zcompdump and forces a full rebuild.
+fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+typeset -U fpath
+autoload -Uz compinit
+if [[ ! -f ~/.zcompdump || -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 # local zshrc
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
